@@ -1,0 +1,21 @@
+[package]
+name = "tdk-showcase"
+version = "0.1.0"
+description = "Tauri Desktop Kit Showcase"
+authors = ["TDK Contributors"]
+edition = "2021"
+rust-version = "1.90"
+
+[lib]
+name = "tdk_showcase_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-store = "2"
+
+[target.'cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))'.dependencies]
+tauri-plugin-window-state = "2"

@@ -1,0 +1,17 @@
+{
+  "name": "tauri-desktop-kit",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@10.17.1",
+  "scripts": {
+    "dev": "pnpm --filter @tdk/showcase dev",
+    "dev:tauri": "pnpm --filter @tdk/showcase tauri dev",
+    "build": "pnpm --filter @tdk/showcase build",
+    "build:tauri": "pnpm --filter @tdk/showcase tauri build",
+    "check": "pnpm --filter @tdk/showcase check"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0",
+    "vue-tsc": "^3.1.0"
+  }
+}

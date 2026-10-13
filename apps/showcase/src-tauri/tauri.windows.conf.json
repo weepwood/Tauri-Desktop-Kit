@@ -1,0 +1,19 @@
+{
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "Tauri Desktop Kit",
+        "width": 1370,
+        "height": 860,
+        "minWidth": 960,
+        "minHeight": 640,
+        "center": true,
+        "resizable": true,
+        "backgroundColor": "#f7f8fa",
+        "decorations": false,
+        "shadow": true
+      }
+    ]
+  }
+}

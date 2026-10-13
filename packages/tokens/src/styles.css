@@ -1,0 +1,71 @@
+/* TDK semantic design tokens. Component styles never depend on Tailwind. */
+:root {
+  font-family: Inter, "Segoe UI Variable Text", "Segoe UI", -apple-system, BlinkMacSystemFont, "Noto Sans SC", sans-serif;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  color-scheme: light;
+  --tdk-accent: #5578df;
+  --tdk-accent-hover: #4264cc;
+  --tdk-accent-muted: #e9edfc;
+  --tdk-accent-contrast: #ffffff;
+  --tdk-canvas: #f7f8fa;
+  --tdk-surface: #ffffff;
+  --tdk-surface-raised: #ffffff;
+  --tdk-sidebar: #f4f5f8;
+  --tdk-surface-hover: #ebeef4;
+  --tdk-surface-active: #e6eaf4;
+  --tdk-text: #202431;
+  --tdk-text-secondary: #70798b;
+  --tdk-text-tertiary: #9ca4b2;
+  --tdk-border: #e5e8ef;
+  --tdk-border-strong: #d1d7e2;
+  --tdk-success: #27875d;
+  --tdk-warning: #bb781d;
+  --tdk-danger: #cd4c56;
+  --tdk-shadow: 0 14px 38px rgba(32, 41, 71, .10), 0 3px 9px rgba(32,41,71,.06);
+  --tdk-radius-sm: 7px;
+  --tdk-radius-md: 11px;
+  --tdk-radius-lg: 15px;
+  --tdk-radius-xl: 19px;
+  --tdk-titlebar-height: 46px;
+  --tdk-statusbar-height: 28px;
+  --tdk-control-height: 34px;
+  --tdk-list-height: 36px;
+  --tdk-space: 14px;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --tdk-accent: #8da8ff;
+  --tdk-accent-hover: #abc0ff;
+  --tdk-accent-muted: #2b3659;
+  --tdk-accent-contrast: #17213f;
+  --tdk-canvas: #16181d;
+  --tdk-surface: #1d2026;
+  --tdk-surface-raised: #242831;
+  --tdk-sidebar: #1b1e24;
+  --tdk-surface-hover: #2a2e38;
+  --tdk-surface-active: #323949;
+  --tdk-text: #e9edf6;
+  --tdk-text-secondary: #a2abba;
+  --tdk-text-tertiary: #788294;
+  --tdk-border: #30353f;
+  --tdk-border-strong: #454c5b;
+  --tdk-success: #64c49b;
+  --tdk-warning: #e8b66c;
+  --tdk-danger: #f18d95;
+  --tdk-shadow: 0 14px 38px rgba(0,0,0,.27);
+}
+:root[data-density="compact"] { --tdk-control-height: 30px; --tdk-list-height: 31px; --tdk-space: 10px; }
+:root[data-density="comfortable"] { --tdk-control-height: 40px; --tdk-list-height: 44px; --tdk-space: 19px; }
+* { box-sizing: border-box; }
+html, body, #app { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+body { background: var(--tdk-canvas); color: var(--tdk-text); font-size: 13px; }
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; opacity: .5; }
+button:focus-visible, input:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--tdk-accent); outline-offset: 2px; }
+::selection { background: var(--tdk-accent-muted); }
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-thumb { border: 2px solid transparent; background-clip: padding-box; background-color: var(--tdk-border-strong); border-radius: 10px; }
+@media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation-duration: .01ms!important; transition-duration: .01ms!important; scroll-behavior: auto!important; } }

@@ -1,0 +1,112 @@
+name: Desktop Packages
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: desktop-${{ github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: windows-x64
+            os: windows-latest
+            bundles: nsis,msi
+            target: ''
+          - name: macos-arm64
+            os: macos-15
+            bundles: dmg
+            target: aarch64-apple-darwin
+          - name: macos-x64
+            os: macos-15-intel
+            bundles: dmg
+            target: x86_64-apple-darwin
+          - name: linux-x64
+            os: ubuntu-24.04
+            bundles: deb,appimage
+            target: ''
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.17.1
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+      - name: Install Rust target (macOS)
+        if: runner.os == 'macOS'
+        run: rustup target add ${{ matrix.target }}
+      - name: Install Linux dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential curl wget file libxdo-dev libssl-dev librsvg2-dev libayatana-appindicator3-dev patchelf
+      - name: Install frontend dependencies
+        run: pnpm install --no-frozen-lockfile
+      - name: Compile native packages
+        working-directory: apps/showcase
+        env:
+          # Ad-hoc signing is not notarization. It prevents some unsigned Apple Silicon app issues.
+          APPLE_SIGNING_IDENTITY: '-'
+        shell: bash
+        run: |
+          if [ -n '${{ matrix.target }}' ]; then
+            pnpm tauri build --target '${{ matrix.target }}' --bundles '${{ matrix.bundles }}'
+          else
+            pnpm tauri build --bundles '${{ matrix.bundles }}'
+          fi
+      - name: Upload installer artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: tdk-${{ matrix.name }}
+          path: |
+            apps/showcase/src-tauri/target/**/bundle/**/*.exe
+            apps/showcase/src-tauri/target/**/bundle/**/*.msi
+            apps/showcase/src-tauri/target/**/bundle/**/*.dmg
+            apps/showcase/src-tauri/target/**/bundle/**/*.deb
+            apps/showcase/src-tauri/target/**/bundle/**/*.AppImage
+          if-no-files-found: error
+          retention-days: 14
+
+  release:
+    name: Prepare draft GitHub Release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - name: Download installers
+        uses: actions/download-artifact@v4
+        with:
+          pattern: tdk-*
+          path: installers
+      - name: Create draft release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          prerelease: true
+          generate_release_notes: true
+          files: |
+            installers/**/*.exe
+            installers/**/*.msi
+            installers/**/*.dmg
+            installers/**/*.deb
+            installers/**/*.AppImage
