@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, useId } from 'vue'
-export interface TabItem { value: string; label: string; disabled?: boolean }
+import type { TabItem } from './types'
 const selected = defineModel<string>({ required: true })
 const props = defineProps<{ items: TabItem[]; label?: string }>()
 const uid = useId()

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, useId } from 'vue'
 import { ChevronDown } from 'lucide-vue-next'
-export interface SelectOption { label: string; value: string; disabled?: boolean }
+import type { SelectOption } from './types'
 const value = defineModel<string>({ default: '' })
 const props = defineProps<{ options: SelectOption[]; id?: string; label?: string; placeholder?: string; hint?: string; error?: string; disabled?: boolean; required?: boolean; name?: string }>()
 const uid = useId()
